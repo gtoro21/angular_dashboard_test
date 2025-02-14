@@ -9,6 +9,12 @@ pipeline {
                 git url: 'https://github.com/gtoro21/angular_dashboard_test.git', branch: 'main', credentialsId: '4dec74cea5403e4558072c23e301531e18e6e888'
             }
         }
+        stage('Install Node.js and npm') {
+            steps {
+                sh 'curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -'
+                sh 'sudo apt-get install -y nodejs'
+            }
+        }
         stage('Build') {
             steps {
                 sh 'npm install'
