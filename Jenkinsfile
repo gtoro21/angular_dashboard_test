@@ -11,19 +11,17 @@ pipeline {
         }
         stage('Build') {
             steps {
-                withEnv(['CONTAINER_HOST=unix:///var/run/podman/podman.sock']) {
-                    sh 'npm install'
-                    sh 'ng build --prod'
-                    sh "podman build -t nombre_de_la_imagen:${VERSION}.${BUILD_NUMBER} ."
-                }
+                sh 'npm install'
+                sh 'ng build --prod'
+                sh 'export CONTAINER_HOST=unix:///var/run/podman/podman.sock && podman build -t nombre_de_la_imagen:${VERSION}.${BUILD_NUMBER} .'
             }
         }
         stage('Deploy to Pod') {
             steps {
-                withEnv(['CONTAINER_HOST=unix:///var/run/podman/podman.sock']) {
-                    sh "podman generate kube nombre_de_la_imagen:${VERSION}.${BUILD_NUMBER} > kubernetes.yaml"
-                    sh 'kubectl apply -f kubernetes.yaml'
-                }
+                sh 'export CONTAINER_HOST=unix:///var/run/podman/podman.sock && podman generate kube nombre_de_la_imagen:${VERSION}.${BUILD_NUMBER} > kubernetes.yaml'
+                sh 'kubectl apply -f kubernetes.yaml'
             }
         }
+
+    }
 }
