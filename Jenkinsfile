@@ -15,17 +15,22 @@ pipeline {
                 sh 'sudo apt-get install -y nodejs'
             }
         }
-        stage('Build') {
+        stage('Set PATH') {
             steps {
-                sh 'npm install'
-                sh 'ng build --prod'
-                sh 'podman --socket /var/run/podman/podman.sock build -t nombre_de_la_imagen:${VERSION}.${BUILD_NUMBER} .'
+                sh 'echo "export PATH=$PATH:/usr/local/bin" >> ~/.bashrc'
+                sh 'source ~/.bashrc'
             }
         }
-        stage('Deploy to Pod') {
+        stage('Clean and Install') {
             steps {
-                sh 'podman --socket /var/run/podman/podman.sock generate kube nombre_de_la_imagen:${VERSION}.${BUILD_NUMBER} > kubernetes.yaml'
-                sh 'kubectl apply -f kubernetes.yaml'
+                sh 'rm -rf node_modules'
+                sh 'npm cache clean --force'
+                sh 'npm install'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'ng build --prod'
             }
         }
     }
