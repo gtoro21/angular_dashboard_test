@@ -13,6 +13,7 @@ pipeline {
             steps {
                 sh 'npm install'
                 sh 'ng build --prod'
+                sh 'chmod -s /usr/bin/newuidmap /usr/bin/newgidmap'
                 sh 'podman --socket /var/run/podman/podman.sock build -t nombre_de_la_imagen:${VERSION}.${BUILD_NUMBER} .'
             }
         }
