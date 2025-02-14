@@ -13,12 +13,12 @@ pipeline {
             steps {
                 sh 'npm install'
                 sh 'ng build --prod'
-                sh 'podman --socket /var/run/podman/podman.sock build -t nombre_de_la_imagen:${VERSION}.${BUILD_NUMBER} .'
+                sh 'export CONTAINER_HOST=unix:///var/run/podman/podman.sock && podman build -t nombre_de_la_imagen:${VERSION}.${BUILD_NUMBER} .'
             }
         }
         stage('Deploy to Pod') {
             steps {
-                sh 'podman --socket /var/run/podman/podman.sock generate kube nombre_de_la_imagen:${VERSION}.${BUILD_NUMBER} > kubernetes.yaml'
+                sh 'export CONTAINER_HOST=unix:///var/run/podman/podman.sock && podman generate kube nombre_de_la_imagen:${VERSION}.${BUILD_NUMBER} > kubernetes.yaml'
                 sh 'kubectl apply -f kubernetes.yaml'
             }
         }
