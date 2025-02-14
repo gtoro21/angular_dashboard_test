@@ -1,6 +1,6 @@
 # STAGE 1:BUILD #
 # Defining base image to be used
-FROM node:15-alpine AS build
+FROM docker.io/node:15-alpine AS build
 # Creating working directory
 WORKDIR /src/app
 # Copying package.json and package-lock.json
@@ -13,7 +13,7 @@ COPY . .
 RUN npm run build --omit=dev
 ### STAGE 2:RUN ###
 # Defining nginx image to be used
-FROM nginx:latest AS ngi
+FROM docker.io/nginx:latest AS ngi
 # Copying compiled code and nginx config to different folder
 # NOTE: This path may change according to your project's output folder
 COPY --from=build /dist/src/app/dist/domain-app-name /usr/share/nginx/html
