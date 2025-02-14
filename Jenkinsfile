@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git url: 'URL_DEL_REPOSITORIO_GIT', branch: 'master', credentialsId: 'ID_DE_LAS_CREDENCIALES'
+                git url: 'https://github.com/gtoro21/angular_dashboard_test.git', branch: 'main', credentialsId: '4dec74cea5403e4558072c23e301531e18e6e888'
             }
         }
         stage('Build') {
