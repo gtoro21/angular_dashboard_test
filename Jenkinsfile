@@ -11,38 +11,46 @@ pipeline {
         }
         stage('Install NVM') {
             steps {
-                sh 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash'
                 sh '''
-                  export NVM_DIR="$HOME/.nvm"
-                  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-                  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-                  source ~/.bashrc
-                  nvm --version
+                    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+                    export NVM_DIR="$HOME/.nvm"
+                    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # Esto carga nvm
+                    [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"  # Esto carga la autocompletación de nvm
+                    source ~/.bashrc
+                    nvm --version
                 '''
             }
         }
         stage('Node Setup') {
             steps {
-                sh 'nvm install v16.17.0' // Installs the latest version of v16.17.0.js
-                sh 'nvm use v16.17.0'     // Use the installed version
-                sh 'node -v'          // Verify node is installed
-                sh 'npm -v'           // Verify npm is installed
+                sh '''
+                    export NVM_DIR="$HOME/.nvm"
+                    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # Carga nvm
+                    nvm install 16.17.0  # Instala la última versión de 16.17.0.js
+                    nvm use 16.17.0      # Usa la versión instalada
+                    node -v           # Verifica que Node.js esté instalado
+                    npm -v            # Verifica que npm esté instalado
+                '''
             }
         }
         stage('Build') {
             steps {
-                    sh 'nvm ls'
-                    sh 'npm install'
-                    sh 'ng build --prod'
-                    sh 'podman build -t nombre_de_la_imagen:${VERSION}.${BUILD_NUMBER} .'
+                sh '''
+                    export NVM_DIR="$HOME/.nvm"
+                    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # Carga nvm
+                    npm install
+                    ng build --prod
+                    podman build -t nombre_de_la_imagen:${VERSION}.${BUILD_NUMBER} .
+                '''
             }
         }
         stage('Deploy to Pod') {
             steps {
-                sh 'podman generate kube nombre_de_la_imagen:${VERSION}.${BUILD_NUMBER} > kubernetes.yaml'
-                sh 'kubectl apply -f kubernetes.yaml'
+                sh '''
+                    podman generate kube nombre_de_la_imagen:${VERSION}.${BUILD_NUMBER} > kubernetes.yaml
+                    kubectl apply -f kubernetes.yaml
+                '''
             }
         }
-
     }
 }
