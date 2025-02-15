@@ -13,7 +13,7 @@ pipeline {
             steps {
                 // Ejecutar comandos de Bash
                 sh '''
-                #!/bin/bash
+                bash
                 source ~/.nvm/nvm.sh
                 ng version
                 ls -la
