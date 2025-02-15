@@ -1,9 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:16.20.0-alpine'  // Or any other Node.js image
-        }
-    }
+    agent { dockerfile true }
     environment {
         VERSION = '1.0'
     }
