@@ -11,6 +11,7 @@ pipeline {
         }
         stage('Build') {
             steps {
+                    sh 'bash'
                     sh 'source ~/.nvm/nvm.sh'
                     sh 'npm install'
                     sh 'ng build --prod'
