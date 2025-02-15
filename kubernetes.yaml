@@ -1,20 +1,20 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: angular-app-${BUILD_NUMBER}
+  name: angular-app-test
   labels:
     app: angular-app
 spec:
   containers:
   - name: angular-app-container
-    image: nombre_de_la_imagen:${VERSION}.${BUILD_NUMBER}
+    image: nombre_de_la_imagen:test
     ports:
     - containerPort: 80
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: angular-app-service-${BUILD_NUMBER}
+  name: angular-app-service-test
 spec:
   selector:
     app: angular-app

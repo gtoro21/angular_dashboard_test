@@ -11,15 +11,15 @@ pipeline {
         }
         stage('Build') {
             steps {
-                    // sh 'ls -la'
-                    // sh 'npm install'
-                    // sh 'ng build --prod'
-                    sh 'podman build -t nombre_de_la_imagen:${VERSION}.${BUILD_NUMBER} .'
+                    sh 'source ~/.nvm/nvm.sh'
+                    sh 'npm install'
+                    sh 'ng build --prod'
+                    sh 'podman build -t nombre_de_la_imagen:test .'
             }
         }
         stage('Deploy to Pod') {
             steps {
-                sh 'podman generate kube nombre_de_la_imagen:${VERSION}.${BUILD_NUMBER} > kubernetes.yaml'
+                sh 'podman generate kube nombre_de_la_imagen:test > kubernetes.yaml'
                 sh 'kubectl apply -f kubernetes.yaml'
             }
         }
