@@ -9,11 +9,6 @@ pipeline {
                 git url: 'https://github.com/gtoro21/angular_dashboard_test.git', branch: 'main', credentialsId: '4dec74cea5403e4558072c23e301531e18e6e888'
             }
         }
-        stage('Ejecutar como otro usuario') {
-            steps {
-                sh 'sudo -u gabriel ls -l'
-            }
-        }
         stage('Build') {
             steps {
                     // sh 'ls -la'
