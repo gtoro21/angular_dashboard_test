@@ -1,10 +1,5 @@
 pipeline {
-    agent { 
-        docker { 
-            image 'node:16.20.0'
-            args '-p 3000:3000'
-        } 
-    }
+    agent any
     environment {
         VERSION = '1.0'
     }
@@ -16,6 +11,7 @@ pipeline {
         }
         stage('Build') {
             steps {
+                    sh 'nvm ls'
                     sh 'npm install'
                     sh 'ng build --prod'
                     sh 'podman build -t nombre_de_la_imagen:${VERSION}.${BUILD_NUMBER} .'
