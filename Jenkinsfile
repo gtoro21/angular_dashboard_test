@@ -11,6 +11,9 @@ pipeline {
         }
         stage('Build') {
             steps {
+                    sh '. ~/.nvm/nvm.sh'
+                    sh 'node -v'
+                    sh 'npm -v'
                     sh 'npm install'
                     sh 'ng build --prod'
                     sh 'podman build -t nombre_de_la_imagen:test .'
