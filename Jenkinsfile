@@ -11,8 +11,8 @@ pipeline {
         }
         stage('Build') {
             steps {
-                    sh 'npm install'
-                    sh 'ng build --prod'
+                    // sh 'npm install'
+                    // sh 'ng build --prod'
                     sh 'podman build -t nombre_de_la_imagen:${VERSION}.${BUILD_NUMBER} .'
             }
         }
