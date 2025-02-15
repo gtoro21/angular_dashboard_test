@@ -14,7 +14,7 @@ pipeline {
             steps {
                 script {
                     // Cambiar a otro usuario usando credenciales
-                    withCredentials([usernamePassword(credentialsId: '4dec74cea5403e4558072c23e301531e18e6e8888', usernameVariable: 'gabriel', passwordVariable: 'gatg1221')]) {
+                    withCredentials([usernamePassword( usernameVariable: 'gabriel', passwordVariable: 'gatg1221')]) {
                         // Aquí puedes ejecutar comandos como el usuario especificado
                         sh '''
                         echo "Ejecutando como $USERNAME"
