@@ -1,5 +1,9 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'node:16.20.0-alpine'  // Or any other Node.js image
+        }
+    }
     environment {
         VERSION = '1.0'
     }
@@ -11,11 +15,9 @@ pipeline {
         }
         stage('Build') {
             steps {
-                nodejs(nodeJSInstallationName: 'Node 16.20.0'){
                     sh 'npm install'
                     sh 'ng build --prod'
                     sh 'podman build -t nombre_de_la_imagen:${VERSION}.${BUILD_NUMBER} .'
-                }
             }
         }
         stage('Deploy to Pod') {
