@@ -10,7 +10,7 @@ pipeline {
             }
         }
         stage('Build') {
-            steps nodejs(nodeJSInstallationName: 'Node 16.x'){
+            steps{
                 sh 'npm install'
                 sh 'ng build --prod'
                 sh 'podman build -t nombre_de_la_imagen:${VERSION}.${BUILD_NUMBER} .'
