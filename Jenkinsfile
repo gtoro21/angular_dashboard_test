@@ -14,12 +14,12 @@ pipeline {
                     // sh 'ls -la'
                     // sh 'npm install'
                     // sh 'ng build --prod'
-                    sh 'podman build -u 0 -t nombre_de_la_imagen:${VERSION}.${BUILD_NUMBER} .'
+                    sh 'podman build -t nombre_de_la_imagen:${VERSION}.${BUILD_NUMBER} .'
             }
         }
         stage('Deploy to Pod') {
             steps {
-                sh 'podman generate kube -u 0 nombre_de_la_imagen:${VERSION}.${BUILD_NUMBER} > kubernetes.yaml'
+                sh 'podman generate kube nombre_de_la_imagen:${VERSION}.${BUILD_NUMBER} > kubernetes.yaml'
                 sh 'kubectl apply -f kubernetes.yaml'
             }
         }
