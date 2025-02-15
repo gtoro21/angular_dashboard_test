@@ -10,10 +10,12 @@ pipeline {
             }
         }
         stage('Build') {
-            steps{
-                sh 'npm install'
-                sh 'ng build --prod'
-                sh 'podman build -t nombre_de_la_imagen:${VERSION}.${BUILD_NUMBER} .'
+            steps {
+                nodejs(nodeJSInstallationName: 'Node 16.20'){
+                    sh 'npm install'
+                    sh 'ng build --prod'
+                    sh 'podman build -t nombre_de_la_imagen:${VERSION}.${BUILD_NUMBER} .'
+                }
             }
         }
         stage('Deploy to Pod') {
