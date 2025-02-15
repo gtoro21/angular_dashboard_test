@@ -1,5 +1,10 @@
 pipeline {
-    agent { dockerfile true }
+    agent { 
+        docker { 
+            image 'node:16.20.0'
+            args '-p 3000:3000'
+        } 
+    }
     environment {
         VERSION = '1.0'
     }
