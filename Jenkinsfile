@@ -11,16 +11,14 @@ pipeline {
         }
         stage('Build') {
             steps {
-                    sh 'node -v'
-                    sh 'npm -v'
                     sh 'npm install'
                     sh 'ng build --prod'
-                    sh 'podman build -t nombre_de_la_imagen:test .'
+                    sh 'docker build -t nombre_de_la_imagen:test .'
             }
         }
         stage('Deploy to Pod') {
             steps {
-                sh 'podman generate kube nombre_de_la_imagen:test > kubernetes.yaml'
+                sh 'docker generate kube nombre_de_la_imagen:test > kubernetes.yaml'
                 sh 'kubectl apply -f kubernetes.yaml'
             }
         }
